@@ -15,3 +15,16 @@ jobs:
         run: |
           python -m skillgate scan fixtures/clean
           ! python -m skillgate scan fixtures/sneaky
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: The action passes on a clean skill
+        uses: ./
+        with: { path: fixtures/clean }
+      - name: The action fails on a sneaky skill
+        id: bad
+        uses: ./
+        with: { path: fixtures/sneaky }
+        continue-on-error: true
+      - run: test "${{ steps.bad.outcome }}" = "failure"

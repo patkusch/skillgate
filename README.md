@@ -2,6 +2,8 @@
 
 Check an agent skill before you install it.
 
+> You wouldn't run a stranger's script without reading it. Skills are scripts plus instructions your AI follows. skillgate reads them first.
+
 Skills are folders of instructions and scripts that your AI agent follows. Most people install them without reading them. skillgate reads them for you and tells you, in plain English:
 
 1. **What it can do.** Reach the internet, run programs, read your keys, keep itself running.
@@ -50,6 +52,18 @@ When an approved skill changes, `verify` says what moved and what it can newly d
 | Files | compiled or unreadable files that can't be checked |
 
 Prose that only *mentions* a risky thing is scored one step lower than code that *does* it.
+
+## As a GitHub Action
+
+```yaml
+- uses: actions/checkout@v4
+- uses: patkusch/skillgate@v0.1.0
+  with:
+    path: skills        # folder with your skills
+    fail-on: block      # or: review, never
+```
+
+Add `sarif: true` to also write `skillgate.sarif`, then upload it with `github/codeql-action/upload-sarif` to see findings in the Security tab.
 
 ## Known false alarms
 

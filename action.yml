@@ -1,0 +1,25 @@
+name: skillgate
+description: Check agent skills for risky behaviour before they are merged or installed.
+branding: { icon: shield, color: blue }
+inputs:
+  path:
+    description: Skill folder, or a folder containing skills
+    default: "."
+  fail-on:
+    description: "Fail the job on: block (default), review, or never"
+    default: block
+  sarif:
+    description: Write skillgate.sarif for GitHub code scanning
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with: { python-version: "3.12" }
+    - shell: bash
+      run: pip install "$GITHUB_ACTION_PATH"
+    - if: inputs.sarif == 'true'
+      shell: bash
+      run: skillgate scan "${{ inputs.path }}" --sarif --fail-on never > skillgate.sarif
+    - shell: bash
+      run: skillgate scan "${{ inputs.path }}" --fail-on "${{ inputs.fail-on }}"
