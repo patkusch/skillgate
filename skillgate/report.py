@@ -28,6 +28,8 @@ def text(result, diff=None, limit=8):
             out.append("  It can: " + "; ".join(can) + ".")
     else:
         out.append("  It only contains instructions and stays inside its own folder.")
+    if result.get("suppressed"):
+        out.append(f"  ({result['suppressed']} known false alarm(s) hidden by your ignore file.)")
     if diff is not None:
         out += _diff_text(diff)
     seen = 0

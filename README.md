@@ -15,6 +15,7 @@ No dependencies. Python 3.9+. Nothing leaves your machine.
 ```bash
 pip install git+https://github.com/patkusch/skillgate
 skillgate scan ./some-skill          # or a folder full of skills
+skillgate scan https://github.com/anthropics/skills   # check before you download; nothing is run
 skillgate approve ./some-skill       # "I read it, I accept it as it is"
 skillgate verify ./some-skill        # later: has it changed since?
 ```
@@ -50,6 +51,14 @@ When an approved skill changes, `verify` says what moved and what it can newly d
 
 Prose that only *mentions* a risky thing is scored one step lower than code that *does* it.
 
+## Known false alarms
+
+Put them in `skillgate.ignore` next to where you run the tool, one per line: `skill rule file  # why`. Wildcards work. It is read from outside the skill on purpose, so a skill can't excuse itself.
+
+```
+mcp-builder  net-request  scripts/*   # it is meant to call APIs
+```
+
 ## In CI
 
 `skillgate scan` exits 1 when a skill is DON'T INSTALL (`--fail-on review` to be stricter). `--sarif` output feeds GitHub code scanning. See `.github/workflows/ci.yml`.
@@ -58,7 +67,8 @@ Prose that only *mentions* a risky thing is scored one step lower than code that
 
 - It reads text patterns. It can't prove a skill is safe, and a determined attacker can get past a pattern list. A clean result means "nothing obvious", not "safe".
 - It will flag legitimate skills that talk about dangerous things (a hook that blocks `mkfs` looks like one that runs it). That is why the verdict says REVIEW or DON'T INSTALL *yet*: a person makes the call, then `approve` records it.
-- Tested against the 23 skills in Anthropic's official plugin marketplace: 15 OK, 7 REVIEW, 1 DON'T INSTALL (a safety hook that names dangerous commands in order to block them).
+- Tested against the 20 skills in [anthropics/skills](https://github.com/anthropics/skills): 9 OK, 11 REVIEW, none blocked. The REVIEW ones are skills that really do use the internet or run programs, which is what REVIEW is for. Earlier versions wrongly blocked several by mistaking `re.compile(...)` for running code; there are tests so that doesn't come back.
+- Testing on 23 skills from the official plugin marketplace found one more false alarm: a safety hook that names dangerous commands in order to block them.
 
 ## Tests
 

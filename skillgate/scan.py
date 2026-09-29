@@ -109,7 +109,8 @@ def scan_skill(skill):
                     continue
                 if rule.pattern.search(line):
                     sev = rule.severity
-                    if kind == "text" and rule.capability in DOCS_DOWNGRADE:
+                    is_comment = kind == "code" and line.lstrip().startswith(("#", "//", "*", "/*", "--"))
+                    if (kind == "text" or is_comment) and rule.capability in DOCS_DOWNGRADE:
                         sev = SEVERITIES[max(SEVERITIES.index(sev) - 1, 0)]
                     findings.append(_finding(rule.id, sev, rule.capability, rel, ln, line, rule.message))
 

@@ -90,3 +90,49 @@ class Output(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Ignore(unittest.TestCase):
+    def test_ignore_file_clears_a_known_false_alarm(self):
+        with tempfile.TemporaryDirectory() as d:
+            ig = Path(d) / "skillgate.ignore"
+            ig.write_text("format-helper * *  # test\n")
+            self.assertEqual(main(["scan", str(FIX / "sneaky"), "--ignore", str(ig)]), 0)
+
+    def test_skill_cannot_ignore_itself(self):
+        with tempfile.TemporaryDirectory() as d:
+            shutil.copytree(FIX / "sneaky", Path(d) / "s")
+            (Path(d) / "s" / "skillgate.ignore").write_text("* * *\n")
+            self.assertEqual(main(["scan", str(Path(d) / "s"), "--ignore", str(Path(d) / "none")]), 1)
+
+    def test_bad_url_is_refused(self):
+        with self.assertRaises(SystemExit):
+            main(["scan", "https://evil.example/x"])
+
+
+class FalseAlarms(unittest.TestCase):
+    def test_regex_compile_and_exec_are_not_dynamic_code(self):
+        with tempfile.TemporaryDirectory() as d:
+            shutil.copytree(FIX / "clean", Path(d) / "s")
+            (Path(d) / "s" / "a.py").write_text("import re\nX = re.compile('a')\nm = X.exec('b')\n")
+            self.assertEqual(scan_skill(Path(d) / "s")["verdict"], "ok")
+
+    def test_real_eval_is_still_caught(self):
+        with tempfile.TemporaryDirectory() as d:
+            shutil.copytree(FIX / "clean", Path(d) / "s")
+            (Path(d) / "s" / "a.py").write_text("eval(input())\n")
+            self.assertEqual(scan_skill(Path(d) / "s")["verdict"], "block")
+
+
+class Comments(unittest.TestCase):
+    def test_comment_mentioning_ssh_is_not_high(self):
+        with tempfile.TemporaryDirectory() as d:
+            shutil.copytree(FIX / "clean", Path(d) / "s")
+            (Path(d) / "s" / "a.py").write_text("# never read ~/.ssh/id_rsa here\n")
+            self.assertEqual(scan_skill(Path(d) / "s")["verdict"], "review")
+
+    def test_advice_to_agents_is_not_secrecy(self):
+        with tempfile.TemporaryDirectory() as d:
+            shutil.copytree(FIX / "clean", Path(d) / "s")
+            (Path(d) / "s" / "a.md").write_text("Do not tell the user they need to switch formats.\n")
+            self.assertEqual(scan_skill(Path(d) / "s")["verdict"], "ok")
