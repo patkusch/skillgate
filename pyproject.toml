@@ -1,0 +1,18 @@
+[project]
+name = "skillgate"
+version = "0.1.0"
+description = "Check an agent skill before you install it: what it can touch, what it says it does, and whether it changed since you approved it."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []
+
+[project.scripts]
+skillgate = "skillgate.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["skillgate"]
