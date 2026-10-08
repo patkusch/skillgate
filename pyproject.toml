@@ -5,7 +5,13 @@ description = "Check an agent skill before you install it: what it can touch, wh
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
+authors = [{ name = "Patricia Kusch" }]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/patkusch/skillgate"
+Repository = "https://github.com/patkusch/skillgate"
+Issues = "https://github.com/patkusch/skillgate/issues"
 
 [project.scripts]
 skillgate = "skillgate.cli:main"
