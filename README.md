@@ -1,5 +1,7 @@
 # skillgate
 
+[![ci](https://github.com/patkusch/skillgate/actions/workflows/ci.yml/badge.svg)](https://github.com/patkusch/skillgate/actions/workflows/ci.yml)
+
 Check an agent skill before you install it.
 
 > You wouldn't run a stranger's script without reading it. Skills are scripts plus instructions your AI follows. skillgate reads them first.
