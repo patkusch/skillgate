@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "skillgate"
+abstract: "Check an agent skill before you install it: what it can touch, what it says it does, and whether it changed since you approved it."
+type: software
+authors:
+  - family-names: "Kusch"
+    given-names: "Patricia"
+repository-code: "https://github.com/patkusch/skillgate"
+license: MIT
