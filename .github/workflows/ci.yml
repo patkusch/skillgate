@@ -6,6 +6,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       matrix:
         python: ["3.9", "3.11", "3.13"]
@@ -20,6 +21,7 @@ jobs:
           ! python -m skillgate scan fixtures/sneaky
   action:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
       - name: The action passes on a clean skill
