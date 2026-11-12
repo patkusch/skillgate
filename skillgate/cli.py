@@ -7,7 +7,6 @@ import tempfile
 from pathlib import Path
 
 from . import lock, report
-from .rules import SEVERITIES
 from .scan import find_skills, scan_skill, verdict
 
 
