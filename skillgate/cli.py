@@ -6,7 +6,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from . import lock, report
+from . import __version__, lock, report
 from .scan import find_skills, scan_skill, verdict
 
 
@@ -73,6 +73,7 @@ def _worst(results):
 
 def main(argv=None):
     p = argparse.ArgumentParser(prog="skillgate", description="Check an agent skill before you install it.")
+    p.add_argument("--version", action="version", version=f"skillgate {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("scan", help="check a skill (or a folder of skills)")
