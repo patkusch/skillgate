@@ -21,6 +21,7 @@ dependencies = []
 Homepage = "https://github.com/patkusch/skillgate"
 Repository = "https://github.com/patkusch/skillgate"
 Issues = "https://github.com/patkusch/skillgate/issues"
+Changelog = "https://github.com/patkusch/skillgate/blob/main/CHANGELOG.md"
 
 [project.scripts]
 skillgate = "skillgate.cli:main"
