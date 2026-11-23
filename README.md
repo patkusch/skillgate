@@ -86,6 +86,10 @@ mcp-builder  net-request  scripts/*   # it is meant to call APIs
 - Tested against the 20 skills in [anthropics/skills](https://github.com/anthropics/skills): 9 OK, 11 REVIEW, none blocked. The REVIEW ones are skills that really do use the internet or run programs, which is what REVIEW is for. Earlier versions wrongly blocked several by mistaking `re.compile(...)` for running code; there are tests so that doesn't come back.
 - Testing on 23 skills from the official plugin marketplace found one more false alarm: a safety hook that names dangerous commands in order to block them.
 
+## Used together
+
+[agentcheck](https://github.com/patkusch/agentcheck) runs skillgate with [leash](https://github.com/patkusch/leash) (agent permissions) and [mandata](https://github.com/patkusch/mandata) (instruction files) on one repo and prints a single page: what to fix first, what to check, and what the page cannot tell you.
+
 ## Tests
 
 ```bash
