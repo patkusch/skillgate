@@ -27,7 +27,7 @@ Changelog = "https://github.com/patkusch/skillgate/blob/main/CHANGELOG.md"
 skillgate = "skillgate.cli:main"
 
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=84.2.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
